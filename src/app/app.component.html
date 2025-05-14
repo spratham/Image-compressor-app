@@ -1,22 +1,25 @@
 <div class="upload-container">
-  <h1>Image Compressor (40% of the actual size)</h1>
+  <h1>
+    <span class="logo">🖼️</span>
+    Image Compressor
+  </h1>
+  <p class="subtitle">Shrink your images easily and download the result!</p>
 
   <!-- File Upload -->
   <div class="upload-box" (click)="fileInput.click()">
-    <input
-      #fileInput
-      type="file"
-      accept="image/*"
-      (change)="onFileChange($event)"
-      hidden
-    />
-    <div *ngIf="!selectedFile; else fileSelected">
-      <mat-icon>cloud_upload</mat-icon>
-      <p>Click to upload an image (max 6MB)</p>
+    <input #fileInput type="file" accept="image/*" (change)="onFileChange($event)" hidden />
+    <div *ngIf="!selectedFile; else fileSelected" class="upload-placeholder">
+      <span class="upload-icon">⬆️</span>
+      <p>Click to upload an image <span class="hint">(max 6MB)</span></p>
     </div>
     <ng-template #fileSelected>
-      <p><strong>{{ selectedFile.name }}</strong></p>
-      <p>Original size: {{ originalSize }}</p>
+      <div class="file-info">
+        <span class="file-icon">🗂️</span>
+        <div>
+          <p><strong>{{ selectedFile.name }}</strong></p>
+          <p class="file-size">Original size: {{ originalSize }}</p>
+        </div>
+      </div>
     </ng-template>
   </div>
 
@@ -26,26 +29,23 @@
   </div>
 
   <!-- Compress Button -->
-  <button
-    *ngIf="selectedFile && !compressedFile"
-    mat-raised-button
-    color="primary"
-    (click)="compressImage()"
-    [disabled]="isLoading"
-  >
-    {{ isLoading ? 'Compressing...' : 'Compress Image' }}
+  <button *ngIf="selectedFile && !compressedFile" mat-raised-button color="primary" class="action-btn"
+    (click)="compressImage()" [disabled]="isLoading">
+    <span *ngIf="!isLoading">✨ Compress Image</span>
+    <span *ngIf="isLoading">
+      <span class="spinner"></span> Compressing...
+    </span>
   </button>
 
   <!-- Results -->
   <div *ngIf="compressedFile" class="result-box">
-    <h3>Compressed Image ({{ compressedSize }})</h3>
-    <img [src]="compressedFile | safeUrl" alt="Compressed preview" />
-    <button
-      mat-raised-button
-      color="accent"
-      (click)="downloadCompressedImage()"
-    >
-      Download Compressed Image
+    <h3>
+      <span class="result-icon">✅</span>
+      Compressed Image <span class="compressed-size">({{ compressedSize }})</span>
+    </h3>
+    <img [src]="compressedFile | safeUrl" alt="Compressed preview" class="preview-img" />
+    <button mat-raised-button color="accent" class="action-btn" (click)="downloadCompressedImage()">
+      ⬇️ Download Compressed Image
     </button>
   </div>
 </div>
